@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Taschenrechner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        ol {
+            list-style: decimal inside;
+            margin: 20px 0;
+            padding: 0;
+        }
+        ol li {
+            margin: 5px 0;
+        }
+        div {
+            margin-top: 20px;
+        }
+        input, button, select {
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        function calculate() {
+            const operator = document.getElementById('operator').value;
+            let result;
+
+            try {
+                if (operator === 'wurzel') {
+                    const a = parseFloat(document.getElementById('zahl1').value);
+                    const n = parseFloat(document.getElementById('zahl2').value);
+                    if (isNaN(a) || isNaN(n)) throw 'Ungültige Zahl';
+                    if (n === 0) throw 'Die Wurzelgröße muss größer als 0 sein';
+                    result = Math.pow(a, 1 / n);
+                } else {
+                    const a = parseFloat(document.getElementById('zahl1').value);
+                    const b = parseFloat(document.getElementById('zahl2').value);
+                    if (isNaN(a) || isNaN(b)) throw 'Ungültige Zahl';
+
+                    switch (operator) {
+                        case 'addition':
+                            result = a + b;
+                            break;
+                        case 'subtraktion':
+                            result = a - b;
+                            break;
+                        case 'multiplikation':
+                            result = a * b;
+                            break;
+                        case 'division':
+                            if (b === 0) throw 'Division durch Null ist nicht erlaubt';
+                            result = a / b;
+                            break;
+                        default:
+                            throw 'Ungültiger Operator';
+                    }
+                }
+                
+                document.getElementById('result').innerText = 'Ergebnis: ' + result;
+            } catch (error) {
+                document.getElementById('result').innerText = 'Fehler: ' + error;
+            }
+        }
+        
+        function toggleSecondInput() {
+            const operator = document.getElementById('operator').value;
+            const secondInput = document.getElementById('zahl2');
+            if (operator === 'wurzel') {
+                secondInput.placeholder = 'Geben Sie die Wurzelgröße ein';
+                secondInput.disabled = false;
+            } else {
+                secondInput.placeholder = 'Geben Sie die zweite Zahl ein';
+                secondInput.disabled = false;
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Taschenrechner für die Oberstufe</h1>
+<ol>
+    <span style="text-decoration: underline;">Wählen Sie zwischen den unterschiedlichen Operatoren</span>
+    <li>Addition</li>
+    <li>Subtraktion</li>
+    <li>Division</li>
+    <li>Multiplikation</li>
+    <li>Wurzel</li>
+    <li>Beenden des Programms</li>
+</ol>
+<div>
+    <input id="zahl1" placeholder="Geben Sie die erste Zahl ein">
+    <select id="operator" onchange="toggleSecondInput()">
+        <option value="addition">Addition</option>
+        <option value="subtraktion">Subtraktion</option>
+        <option value="multiplikation">Multiplikation</option>
+        <option value="division">Division</option>
+        <option value="wurzel">Wurzel</option>
+    </select>
+    <input id="zahl2" placeholder="Geben Sie die zweite Zahl ein">
+    <button onclick="calculate()">Berechnen</button>
+</div>
+<p id="result"></p>
+</body>
+</html>
